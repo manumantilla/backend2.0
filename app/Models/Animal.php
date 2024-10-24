@@ -19,6 +19,7 @@ class Animal extends Model
         'fecha_ingreso',
         'origen',
         'genero',
+        'etapa',
         'estado',
         'peso',
         'latitude',

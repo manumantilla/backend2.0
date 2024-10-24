@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('estado')->default('Activo');
             $table->string('peso');
             $table->string('foto');
+            $table->enum('etapa',['Cria','Levante','Ceba']);
             $table->decimal('latitude',10,7)->nullable();
             $table->decimal('longitude',10,7)->nullable();
             $table->timestamps();

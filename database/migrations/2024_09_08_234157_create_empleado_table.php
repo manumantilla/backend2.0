@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('empleado', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->decimal('cedula');
+            $table->float('cedula');
             $table->date('fecha_inicio');
             $table->string('foto');
             $table->decimal('numero');
-             
+            $table->decimal('numero_emergencia');
+            $table->enum('tipo_contrato',['Prestacion_de_servicios','Horas','Planta']);
+            $table->enum('estado',['Activo','Inactivo','Enfermo']);
+            $table->string('nss'); //Nro de Seguridad Social
+                                 
             
             $table->timestamps();
         });

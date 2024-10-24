@@ -20,17 +20,9 @@ return new class extends Migration
             // Usamos 'decimal' para manejar números con decimales
             $table->decimal('peso_venta', 8, 2);  // Ejemplo de peso en kg, hasta 999999.99
             $table->decimal('valor_kilo', 8, 2);  // Valor por kilo con decimales
-
-            // Para textos, 'text' está bien
             $table->text('nombre_comprador');
-
-            // Para números de contacto, es mejor usar 'string' en lugar de 'number'
             $table->string('contacto_comprador', 15);  // Ejemplo de campo para teléfono o contacto
-
-            // Otros campos de tipo string
             $table->string('guia');
-        
-            // Campos 'created_at' y 'updated_at'
             $table->timestamps();
         });
     }

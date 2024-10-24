@@ -1,56 +1,109 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Cultivo;
+use App\Models\Empleado;
+use App\Models\Empleado_Trabajo;
+use App\Models\Envio;
+use App\Models\Gasto;
+use App\Models\Trabajo;
+use App\Models\Venta;
+
+use Illuminate\Support\Facades\Log;
+
 
 use Illuminate\Http\Request;
 
+
 class CultivoController extends Controller
 {
+    // todo 
+    //? Show form for add crop
+    public function showFormCrop(){
+        return view('cultivo.create');
+    }
     // ? Save a new Crop
-    public function store(Request $request){
+    public function store(Request $request)
+    {
+        //dd($request->all()); 
+        // Validación de los datos de entrada
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'fecha_siembra' => 'required',
-            'fecha_cosecha' => 'required',
+            'fechasiembra' => 'required|date',
+            'fechacosecha' => 'required|date|after_or_equal:fechasiembra',
             'area' => 'required',
-            'estado' => 'required|string',
-            'semilla' => 'required|string',
-            'descripcion_semilla' => 'required|string',
-            'viajes_abono' => 'required',
+            'estado' => 'required',
+            'semilla' => 'nullable',
+            'abono' => 'nullable',
+            'gasto' => 'nullable',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
+            'rendimiento' => 'nullable',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png', // Restricción para archivos de imagen
         ]);
-        Cultivo::create([
-            'nombre' => $request->nombre,
-            'fecha_siembra' => $request->fecha_siembra,
-            'fecha_cosecha' => $request->fecha_cosecha,
-            'area' => $request->area,
-            'estado' => $request->estado,
-            'semilla'=> $request->semilla,
-            'descripcion_semilla'=>$request->descripcion_semilla,
-            'viajes_abono'=>$request->viajes_abono,
-        ]);
-        return redirect()->route('cultivo.index')->with('success','Cultivo Registrado Exitosamente');
+    
+        // Manejo de la imagen
+        $imageName = null;
+        if ($request->hasFile('foto')) {
+            $imageName = $request->file('foto')->store('public/foto_cultivo');
+        }
+    
+        // Creación del objeto Cultivo
+        $cultivo = new Cultivo();
+        $cultivo->nombre = $request->input('nombre');
+        $cultivo->ph = $request->input('ph');
+        $cultivo->fecha_siembra = $request->input('fechasiembra');
+        $cultivo->fecha_cosecha = $request->input('fechacosecha');
+        $cultivo->area = $request->input('area');
+        $cultivo->estado = $request->input('estado');
+        $cultivo->gasto = $request->input('gasto');
+        $cultivo->latitude = $request->input('latitude');
+        $cultivo->longitude = $request->input('longitude');
+        $cultivo->foto = $imageName;
+        $cultivo->bultos_abono = $request->input('abono');
+        $cultivo->semilla = $request->input('semilla');
+        $cultivo->etapa = $request->input('etapa');
+        $cultivo->rendimiento = $request->input('rendimiento');
+        $cultivo->tratamiento = $request->input('tratamiento');
+        
+        // Guarda el objeto en la base de datos
+        //$cultivo->save();
+        try {
+    
+            $cultivo->save();
+            return redirect()->route('animales.index')->with('success', 'Cultivo Registrado Exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error al guardar el cultivo: ' . $e->getMessage());
+            return back()->withErrors('Error al guardar el cultivo: ' . $e->getMessage())->withInput();
+        }
+        
+        // Redirección con mensaje de éxito
+        return redirect()->route('animales.index')->with('success', 'Cultivo Registrado Exitosamente');
     }
+    
     // ? Show all crops
-    public function show(){
+    public function showcultivos(){
         //Retrieve
         $cultivos = Cultivo::all();
         //Pass all cultivos
-        return view('cultivo.index',compact($cultivos));
+        return view('cultivo.index',compact('cultivos'));
     }
     // ? Show specfiic cultivo
-    public function showSpecific(Cultivo $cultivo){
-        return view('cultivo.showSpecific', compact('animal'));
+    public function especifico(Cultivo $cultivo)
+    {
+        return view('cultivo.specific_cultivo', compact('cultivo'));
     }
+    
     // ? delete a crop
     public function destroy(Cultivo $cultivo){
-        $animal -> delete();
+        $cultivo -> delete();
         return redirect()->route('cultivo.index')->with('success','Cultivo Eliminado Exitosamente');
     }
-    // ? Edur
-    public function edit(Cultivo $cultvio){
+    // ? Edit a crop
+    public function edit(Cultivo $cultivo){
         return view('cultivo.edit', compact('cultivo'));
     }
-    // ? Update
+    // ? Update a cultivo
     public function update(Request $request, Cultivo $cultivo){
         $request->validate([
                 
@@ -58,24 +111,41 @@ class CultivoController extends Controller
         $cultivo->update($request->all());
         return redirect()->route('cultivo.index')->with('success','Cultivo Actualizado Exitosamente');
     }
-    // * Add un gasto
+    //add fumigacion o abono
+    public function add(Request $request,$id){
+        //Recibir el request
+        $request->validate([
+            'trabajadores',
+            ''
+        ]);
+        //Crear un objeto y enviarlo
+
+        //
+
+    }
+    //Form gastos: get
+    public function form_gastos(){
+        $cultivos = Cultivo::all();
+        $empleados = Empleado::where('tipo_contrato','Planta')->get();
+        return view('cultivo.gasto',compact('cultivos','empleados'));
+    }
+    // Add un gasto
     public function addGasto(Request $request){
         $request->validate([
-            'monto' => 'required|numeric',
-            'fecha' => 'required',
+            'valor' => 'required|numeric',
             'descripcion' => 'required|string',
             'foto' => 'nullable|mimes:jpg,jpeg,png,svg,pdf',
-            
             'cultivo_id' => 'nullable|exists:cultivos,id',
         ]);
         if ($request->hasFile('foto')){
-            $imageName = $request->file('foto')->store('public/images');
+            $imageName = $request->file('foto')->store('public/compra_facturas');
         }else{
             $imageName = null;
         }
         $gasto = new Gasto();
-        $gasto->monto = $request->input('monto');
-        $gasto->fecha = $request->input('fecha');
+        $gasto->valor = $request->input('valor');
+       
+       //$gasto->fecha = $request->input('fecha');
         $gasto->descripcion = $request->input('descripcion');
         $gasto->foto = $imageName;
 
@@ -83,7 +153,56 @@ class CultivoController extends Controller
             $gasto->cultivo_id = $request->input('cultivo_id');
         }
         $gasto -> save();
-        return redirect()->route('animales.index')->with('success','Agregar Gasto')
+        return redirect()->route('cultivo.index')->with('success','Agregar Gasto');
 
     }
+    // ! Add a viaje
+    public function viaje(Request $request, Cultivo $cultivo){
+
+    }
+    /**
+     * E M P L E A D O S 
+     */
+    //* Form for add employe
+    public function formEmploye(){
+        return view('cultivo.create_trab');
+    }
+    //* Add new employe
+    public function addEmploye(Request $request){
+        $request->validate([]);
+        if($request->hasFile('foto')){
+            $imageName =  $request->file('foto')->store('public/foto_empleados');
+        }else{
+            $imageName = null;
+        }
+        $empleado = new Empleado();
+        $empleado->nombre = $request->input('nombre');
+        $empleado->cedula = $request->input('cedula');
+        $empleado->fecha_inicio = $request->input('fecha_inicio');
+        $empleado->foto = $imageName;
+        $empleado->numero = $request->input('numero');
+        $empleado->numero_emergencia = $request->input('numero_emergencia');
+        $empleado->estado = $request->input('estado');
+        $empleado->tipo_contrato = $request->input('tipo_contrato');
+        $empleado->nss = $request->input('nss');
+        $empleado->save();
+
+        return redirect()->route('cultivo.index')->wiht('success','Empleado Agregado Exitosamente');
+
+    }
+    //* Show all employes
+    public function showemployes(){
+        $empleados = Empleado::all();
+        return view('cultivo.show_trab',compact('empleados'));
+    }
+    //* Delete one employe
+    public function destroyemployes(Empleado $empleado){
+        $empleado -> delete();
+        return redirect()->route('cultivo.showemployes')->with('success','Eliminado Exitosamente');
+    }
+    //* Edit one employe
+
+
+    // todO: 
+
 }

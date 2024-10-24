@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Animal; // Importar el modelo 'Animal' correctamente
 use App\Models\RegistroMedico; //Importamos el modelo 'registroMedico' 
+use App\Models\Venta;
 class AnimalController extends Controller
 {
     //Show the Medical register
@@ -13,7 +14,7 @@ class AnimalController extends Controller
     }
     //Add info to the registro medico
     public function addRegistro(Request $request, Animal $animal){
-        //validar los campos
+        //validar algunos campos importantes
         $request->validate([
             'animal_id' => 'required|exists:animals,id',
             'peso' => 'required|numeric',
@@ -124,6 +125,7 @@ class AnimalController extends Controller
         $request->validate([
             'identificacion' => 'required|max:255|unique:animals,identificacion,' . $animal->id,
             'especie' => 'required',
+            'nombre' => 'required',
             'fecha_ingreso' => 'required|date',
             'genero' => 'required|in:Macho,Hembra',
         ]);
@@ -137,42 +139,42 @@ class AnimalController extends Controller
         $animal->delete();
         return redirect()->route('animales.index')->with('success', 'Animal eliminado exitosamente');
     }
-    public function sell(Animal $animal, Request $request) {
+    public function sell(Request $request, $id) {
+        //dd($request->all());
         $request->validate([
-            'peso' => 'required|numeric',
+            'peso_venta' => 'required|numeric',
             'valor_kilo' => 'required|numeric',
-            'nombre_comprador' => 'required|string',
-            'contacto_comprador' => 'required|string', // Or use numeric if appropriate
-            'guia' => 'nullable|mimes:jpeg,png,jpg,gif,svg,pdf', // Mark guia as nullable
+            'nombre_comprador' => 'required|string|max:255',
+            'contacto_comprador' => 'required|string|max:255',
+            'guia' => 'mimes:jpeg,png,jpg,gif,svg,pdf', // Archivo opcional
         ]);
     
         $imageName = null;
         if ($request->hasFile('guia')) {
-            // Store the file using Laravel's storage
-            $imageName = $request->file('guia')->store('public/images');
+            $imageName = time() . '.' . $request->file('guia')->extension();
+            $request->file('guia')->move(public_path('uploads/images'), $imageName);
         }
     
-        try {
+    
+            // Crear una nueva venta
             $venta = new Venta();
-            $venta->peso_venta = $request->input('peso');
+            $venta->peso_venta = $request->input('peso_venta');
             $venta->valor_kilo = $request->input('valor_kilo');
             $venta->nombre_comprador = $request->input('nombre_comprador');
             $venta->contacto_comprador = $request->input('contacto_comprador');
-            $venta->animal_id = $request->input('animal_id'); // Ensure consistency with 'animal_id'
+            $venta->animalId = $id; // Usamos el ID recibido por la ruta
             $venta->guia = $imageName;
             $venta->save();
     
-            // Update the animal's weight and status
-            $animal = Animal::findOrFail($request->input('animal_id'));
-            $animal->peso = $request->input('peso');
+            // Actualizar el peso del animal y marcarlo como vendido
+            $animal = Animal::findOrFail($id);
+            $animal->peso = $request->input('peso_venta');
             $animal->estado = 'Vendido';
             $animal->save();
     
-            return redirect()->route('animales.index')->with('success', 'Animal Vendido');
-        } catch (\Exception $e) {
-            // Handle exceptions gracefully
-            return redirect()->back()->withErrors('Error al vender el animal: ' . $e->getMessage());
-        }
+            return redirect()->route('animales.index')->with('success', 'Animal vendido exitosamente.');
+       
     }
+    
     }
 

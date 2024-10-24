@@ -14,4 +14,5 @@ class RegistroMedico extends Model
     public function animal(){
         return $this->belongsTo(Animal::class);
     }
+        
 }

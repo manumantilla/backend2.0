@@ -48,6 +48,14 @@
                 <option value="Fallecido" {{ old('estado', $animal->estado) == 'Fallecido' ? 'selected' : '' }}>Fallecido</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="etapa" >Etapa</label>
+            <select name="etapa" id="etapa" class="form-control">
+                <option value="Cria" {{old('etapa', $animal->etapa) == 'Cria' ? 'selected' : '' }}>Cria</option>
+                <option value="Levante" {{old('etapa' $animal->etapa) == 'Levante' ? 'selected' : ''}}>Levante</option>
+                <option value="Ceba" old{{old('etapa', $animal->etapa) == 'Ceba' ? 'selected' : ''}}>Ceba</option>
+            </select>
+        </div>
         <div class="flex justify-end">
                 <button type="button" class="mr-4 py-2 px-4 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Cancel</button>
                 <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Save</button>
