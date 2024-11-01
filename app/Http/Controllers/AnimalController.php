@@ -175,6 +175,23 @@ class AnimalController extends Controller
             return redirect()->route('animales.index')->with('success', 'Animal vendido exitosamente.');
        
     }
+    // todo: Analisis Peso
+    public function analysis(){
+        $animales = Animal::with('registrosMedicos')->get();
+        $dataForChart = [];
+        
+        foreach($animales as $animal){
+            if($animal->registrosMedicos->isNotEmpty()){
+                $dataForChart[$animal->identificacion] = [
+                    'labels' => $animal->registrosMedicos->pluck('fecha_vis_medico')->map(function($date){
+                        return $date->format('d/m/Y');
+                    }),
+                    'data' => $animal->registrosMedicos->pluck('peso'),
+                ];
+            }
+        }
+        return view('animales.analysis',compact('dataForChart'));
+    }
     
     }
 

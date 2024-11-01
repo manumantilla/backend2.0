@@ -16,11 +16,27 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('animales.create')" :active="request()->routeIs('animales.create')">
-                        {{ __('Create')}}
+                        {{ __('Register Animal')}}
                     </x-nav-link>
                     <x-nav-link :href="route('animales.index')" :active="request()->routeIs('animales.index')">
-                        {{ __('Animales')}}
+                        {{ __('Animals')}}
                     </x-nav-link>
+                    <x-nav-link :href="route('cultivo.create')" :active="request()->routeIs('animales.index')">
+                        {{ __('Create Crop')}}
+                    </x-nav-link>
+                    <x-nav-link :href="route('cultivo.showcultivos')" :active="request()->routeIs('animales.index')">
+                        {{ __('Crops')}}
+                    </x-nav-link>
+                    <x-nav-link :href="route('cultivo.gasto')" :active="request()->routeIs('animales.index')">
+                        {{ __('Gasto')}}
+                    </x-nav-link>
+                    <x-nav-link :href="route('envios.index')" :active="request()->routeIs('animales.index')">
+                        {{ __('Venta')}}
+                    </x-nav-link>
+                    <x-nav-link :href="route('envios.create')" :active="request()->routeIs('animales.index')">
+                        {{ __('Envios Cosecha')}}
+                    </x-nav-link>
+                
                 </div>
             </div>
 

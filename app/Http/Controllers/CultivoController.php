@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 class CultivoController extends Controller
 {
     // todo 
+
     //? Show form for add crop
     public function showFormCrop(){
         return view('cultivo.create');
@@ -80,7 +81,6 @@ class CultivoController extends Controller
         // Redirección con mensaje de éxito
         return redirect()->route('animales.index')->with('success', 'Cultivo Registrado Exitosamente');
     }
-    
     // ? Show all crops
     public function showcultivos(){
         //Retrieve
@@ -93,7 +93,6 @@ class CultivoController extends Controller
     {
         return view('cultivo.specific_cultivo', compact('cultivo'));
     }
-    
     // ? delete a crop
     public function destroy(Cultivo $cultivo){
         $cultivo -> delete();
@@ -112,23 +111,15 @@ class CultivoController extends Controller
         return redirect()->route('cultivo.index')->with('success','Cultivo Actualizado Exitosamente');
     }
     //add fumigacion o abono
-    public function add(Request $request,$id){
-        //Recibir el request
-        $request->validate([
-            'trabajadores',
-            ''
-        ]);
-        //Crear un objeto y enviarlo
 
-        //
-
-    }
     //Form gastos: get
-    public function form_gastos(){
+    public function form_gastos() {
         $cultivos = Cultivo::all();
-        $empleados = Empleado::where('tipo_contrato','Planta')->get();
-        return view('cultivo.gasto',compact('cultivos','empleados'));
+        $empleados = Empleado::where('tipo_contrato', 'Planta')->get();
+    
+        return view('cultivo.gasto', compact('cultivos', 'empleados'));
     }
+
     // Add un gasto
     public function addGasto(Request $request){
         $request->validate([
@@ -156,6 +147,54 @@ class CultivoController extends Controller
         return redirect()->route('cultivo.index')->with('success','Agregar Gasto');
 
     }
+
+    public function trabajo(Cultivo $cultivo) {
+        return view('cultivo.create_trabajo', compact('cultivo'));
+    }
+    public function addTrabajo(Request $request, $id) {
+        // Validación de los datos de entrada
+        try {
+            $request->validate([
+                'tipo' => 'required|in:arado,fertilizacion inicial,abono,riego,tratamiento,cosecha,post-cosecha',
+                'fecha_inicio' => 'required|date',
+                'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+                'descripcion' => 'required|string|max:255',
+                'ubicacion' => 'required|string|max:255',
+                'estado' => 'required|in:pendiente,en_trabajo,terminada',
+                'prioridad' => 'required|in:baja,media,alta',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Captura de errores de validación
+            Log::error('Errores de validación: ' . json_encode($e->errors()));
+            return back()->withErrors($e->validator)->withInput();
+        }
+    
+        // Crear una nueva instancia de Trabajo
+        $trabajo = new Trabajo();
+        
+        // Asignar valores del request a la instancia
+        $trabajo->cultivo_id = $id; // Asignar el ID del cultivo
+        $trabajo->tipo = $request->input('tipo');
+        $trabajo->fecha_inicio = $request->input('fecha_inicio');
+        $trabajo->fecha_fin = $request->input('fecha_fin');
+        $trabajo->descripcion = $request->input('descripcion');
+        $trabajo->ubicacion = $request->input('ubicacion');
+        $trabajo->estado = $request->input('estado');
+        $trabajo->prioridad = $request->input('prioridad');
+    
+        // Guardar el trabajo en la base de datos
+        try {
+            Log::info('Validación pasada, se procederá a guardar el trabajo');
+            
+            $trabajo->save(); // Guardar el trabajo
+    
+            return redirect()->route('cultivo.showcultivos')->with('success', 'Trabajo Registrado Exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error al guardar el trabajo: ' . $e->getMessage());
+            return back()->withErrors('Error al guardar el trabajo: ' . $e->getMessage())->withInput();
+        }
+    }
+    
     // ! Add a viaje
     public function viaje(Request $request, Cultivo $cultivo){
 

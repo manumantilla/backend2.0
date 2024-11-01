@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Trabajo extends Model
 {
     use HasFactory;
+    protected $table = 'trabajo';
+    protected $fillable =[
+        'cultivo_id',
+        'tipo',
+        'fecha_inicio',
+        'fecha_fin',
+        'descripcion',
+        'ubicacion',
+        'estado',
+        'prioridad',
+    ];
 
     //relacion uno a muchos: un trabajo tiene muchos empleados_trabajo
     public function empleado_trabajo(){

@@ -10,7 +10,7 @@
             <div>
                 <label for="cultivo_id" class="block text-sm font-medium text-gray-700">Cultivo</label>
                 <select name="cultivo_id" id="cultivo_id">
-                @foreach ($cultivos as cultivo)
+                @foreach ($cultivos as $cultivo)
                     <option value="{{$cultivo->id}}">{{$cultivo->nombre}}</option>
                 @endforeach          
                 </select>
