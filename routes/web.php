@@ -30,6 +30,13 @@ Route::middleware('auth')->group(function () {
 // ** Routes fro management C U L T I V O S
 // TODO Routes CRUD Basic
 // ? Show all the crops
+Route::get('/cultivo/trabajos',[CultivoController::class, 'trabajos'])->name('cultivo.trabajos');
+Route::get('/cultivo/{trabajo}/addtrabajador',[CultivoController::class,'addtrabajador'])->name('cultivo.addtrabajador');
+Route::post('/cultivo/relacionar',[CultivoController::class,'relacionar'])->name('cultivo.relacionar');
+
+
+
+
 
 Route::get('cultivo/gastos/',[CultivoController::class,'form_gastos'])->name('cultivo.form_gastos');
 Route::get('cultivo/cultivos',[CultivoController::class,'showcultivos'])->name('cultivo.showcultivos');
@@ -66,9 +73,9 @@ Route::get('/cultivo/{cultivo}/ganancias',[AnalisisController::class,'index'])->
 //Guardar un nueo trabajo
 Route::get('/cultivo/{cultivo}/trabajo',[CultivoController::class,'trabajo'])->name('cultivo.trabajo');
 Route::post('/cultivo/{cultivo}/addfinal',[CultivoController::class,'addTrabajo'])->name('cultivo.addTrabajo');
+
+
 //Relacionar trabajador
-Route::get('/cultivo/{trabajo}/addtrabajador',[CultivoController::class,'addtrabajador'])->name('cultivo.addtrabajador');
-Route::post('/cultivo/relacionar',[CultivoController::class,'relacionar'])->name('cultivo.relacionar');
 
 
 

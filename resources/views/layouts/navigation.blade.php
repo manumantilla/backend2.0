@@ -36,6 +36,9 @@
                     <x-nav-link :href="route('envios.create')" :active="request()->routeIs('animales.index')">
                         {{ __('Envios Cosecha')}}
                     </x-nav-link>
+                    <x-nav-link :href="route('cultivo.trabajos')" :active="request()->routeIs('cultivo.trabajos')">
+                        {{ __('Trabajos')}}
+                    </x-nav-link>
                 
                 </div>
             </div>

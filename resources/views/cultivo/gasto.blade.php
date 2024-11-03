@@ -6,7 +6,7 @@
     <h2 class="text-lg font-semibold text-gray-700 mb-4">Agregar un Gasto Relacionado</h2>
     <form method="POST" action="{{ route('cultivo.addGasto') }}" enctype="multipart/form-data">
         @csrf
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="items-center grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <!-- For show all the crops -->
             <div>
                 <label for="cultivo_id" class="block text-sm font-medium text-gray-700">Cultivo</label>
@@ -21,6 +21,27 @@
             <div>
                 <label for="foto" class="block text-sm font-medium text-gray-700">Subir Foto Comprobante</label>
                 <input type="file" name="foto" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div>
+                <label for="tipo" class="block text-sm font-medium text-gray-700">Tipo</label>
+                <select name="tipo" id="tipo">
+                    <option value="Fertilizante">Fertilizante</option>
+                    <option value="Pesticida">Pesticida</option>
+                    <option value="Riego">Riego</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Daños Menores">Daños Menores</option>
+                </select>
+            </div>
+            
+            <div class="items-center">
+                <label for="ciclo" class="block text-sm font-medium text-gray-700">Ciclo</label>
+                <select name="ciclo" id="ciclo">
+                    <option value="nacimiento">Nacimiento</option>
+                    <option value="cura">Cura</option>
+                    <option value="abono">Abono</option>
+                    <option value="Engrosamiento">Engrosamiento</option>
+                </select>
             </div>
 
             <!-- For describe something -->
@@ -38,7 +59,10 @@
                     @endforeach
                 </select>
             </div>
-
+            <div>  
+                <label for="vendedor" class="block text-sm font-medium text-gray-700">Vendedor</label>
+                <input type="text" name="vendedor" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
             <!-- Valor -->
             <div>  
                 <label for="valor" class="block text-sm font-medium text-gray-700">Valor Final</label>

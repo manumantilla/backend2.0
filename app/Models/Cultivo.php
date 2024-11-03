@@ -33,4 +33,5 @@ class Cultivo extends Model
     public function gastos(){
         return $this->hasMany(Gasto::class,'cultivo_id');
     }
+    
 }

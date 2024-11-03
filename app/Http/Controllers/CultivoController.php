@@ -20,9 +20,9 @@ class CultivoController extends Controller
     // todo 
     // * Show gastos
     public function gastoSpecific(Cultivo $cultivo){
-        $cultivo = Cultivo::findOrFail($cultivo);
-        $gastos = Gasto::where('cultivo_id',$id)->get();
-        return view('cultivo.listagastos',compact('cultivo','gastos'));
+     
+        $gastos = Gasto::where('cultivo_id',$cultivo->id)->get();
+        return view('cultivo.table_gastos',compact('cultivo','gastos'));
 
     }
 
@@ -129,42 +129,37 @@ class CultivoController extends Controller
 
     // Add un gasto
     public function addGasto(Request $request){
-        $request->validate([
+        $validatedData = $request->validate([
             'valor' => 'required|numeric',
             'descripcion' => 'required|string',
+            'tipo' => 'required|string',
+            'ciclo' => 'required',
+            'responsable' => 'required',
+            'vendedor' => 'required',
             'foto' => 'nullable|mimes:jpg,jpeg,png,svg,pdf',
             'cultivo_id' => 'nullable|exists:cultivo,id',
         ]);
+    
         if ($request->hasFile('foto')){
-            $imageName = $request->file('foto')->store('public/compra_facturas');
-        }else{
-            $imageName = null;
+            $validatedData['foto'] = $request->file('foto')->store('compra_facturas', 'public');
         }
-        $gasto = new Gasto();
-        $gasto->valor = $request->input('valor');
-       
-       //$gasto->fecha = $request->input('fecha');
-        $gasto->descripcion = $request->input('descripcion');
-        $gasto->foto = $imageName;
-
-        if($request->input('cultivo_id')){
-            $gasto->cultivo_id = $request->input('cultivo_id');
-        }
-        $gasto -> save();
-        return redirect()->route('cultivo.index')->with('success','Agregar Gasto');
-
+    
+        $gasto = Gasto::create($validatedData);
+    
+        return redirect()->route('cultivo.showcultivos')->with('success', 'Gasto agregado exitosamente');
     }
-    //! 
+      //! 
     public function addtrabajador(Trabajo $trabajo){
-        $trabajo = Trabajo::findOrFail($trabajo);
-        return view('cultivo.addtrabajador',compact('trabajo'));
+        $empleados = Empleado::all();
+        return view('cultivo.relaciontrabajadores', compact('trabajo', 'empleados'));
     }
+
     public function relacionar(Request $request){
         $request -> validate([
-            'trabajo_id' => '',
-            'empleado_id' => '',
-            'descripcion' => '',
-            'pago' => '',
+            'trabajo_id' => 'required',
+            'empleado_id' => 'required',
+            'descripcion' => 'required',
+            'pago' => 'nullable',
         ]);
 
         $empleado_trabajo = new Empleado_Trabajo();
@@ -183,6 +178,11 @@ class CultivoController extends Controller
             return back()->withErrors('Error al guardar el trabajo: ' . $e->getMessage())->withInput();
         }
 
+    }
+    // * Mostrar todos lo trabajos
+    public function trabajos(){
+        $trabajos = Trabajo::all();
+        return view('cultivo.trabajos',compact('trabajos'));
     }
 
     public function trabajo(Cultivo $cultivo) {
