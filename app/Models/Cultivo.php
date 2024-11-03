@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cultivo extends Model
 {
     use HasFactory;
-    protected $table='cultivo';
+    protected $table ='cultivo';
     protected $fillable = [
         'nombre', 'fecha_siembra', 'fecha_cosecha', 'area', 'estado',
         'gasto', 'latitude', 'longitude', 'foto', 'bultos_abono',

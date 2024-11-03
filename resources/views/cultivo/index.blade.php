@@ -63,6 +63,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         <a href="{{route('cultivo.especifico',$cultivo->id)}}" class="text-gray-600 hover:text-indigo-900">Ver</a> 
                         <a href="{{route('cultivo.edit',$cultivo->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="{{route('cultivo.table_gastos',$cultivo->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                         
                         <a href="{{route('cultivo.trabajo',$cultivo->id)}}" class="text-green-600 hover:text-indigo-900">Job</a> 
                         <a href="{{route('cultivo.destroy',$cultivo->id)}}" class="text-indigo-600 hover:text-indigo-900">

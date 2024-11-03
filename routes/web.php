@@ -4,49 +4,9 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\ProfileController;
 USE App\Http\Controllers\CultivoController;
 use App\Http\Controllers\EnvioController;
+use App\Http\Controllers\AnalisisController;
 use Illuminate\Support\Facades\Route;
 Route::resource('envios',EnvioController::class);
-/***
- * 
- * Route::middleware('auth')->prefix('cultivo')->group(function () {
-    Route::get('/', [CultivoController::class, 'show'])->name('cultivo.show');
-    Route::get('/create', [CultivoController::class, 'create'])->name('cultivo.create');
-    Route::post('/store', [CultivoController::class, 'store'])->name('cultivo.store');
-    Route::get('/{cultivo}/edit', [CultivoController::class, 'edit'])->name('cultivo.edit');
-    Route::put('/{cultivo}/update', [CultivoController::class, 'update'])->name('cultivo.update');
-    Route::delete('/{cultivo}', [CultivoController::class, 'destroy'])->name('cultivo.destroy');
-    Route::get('/form_gastos', [CultivoController::class, 'form_gastos'])->name('cultivo.form_gastos');
-    Route::post('/', [CultivoController::class, 'addGasto'])->name('cultivo.addGasto');
-    Route::post('/add', [CultivoController::class, 'add'])->name('cultivo.add');
-    
-    // Empleados relacionados con Cultivo
-    Route::get('/form', [CultivoController::class, 'formEmploye'])->name('cultivo.formEmploye');
-    Route::post('/addEmploye', [CultivoController::class, 'addEmploye'])->name('cultivo.addEmploye');
-    Route::get('/showemployes', [CultivoController::class, 'showemployes'])->name('cultivo.showemployes');
-    Route::get('/editemployes', [CultivoController::class, 'editemployes'])->name('cultivo.editemployes');
-    Route::delete('/destroyemployes', [CultivoController::class, 'destroyemployes'])->name('cultivo.destroyemployes');
-});
-
-Route::middleware('auth')->prefix('animales')->group(function () {
-    Route::get('/', [AnimalController::class, 'index'])->name('animales.index');
-    Route::get('/create', [AnimalController::class, 'create'])->name('animales.create');
-    Route::post('/store', [AnimalController::class, 'store'])->name('animales.store');
-    Route::get('/{animal}', [AnimalController::class, 'show'])->name('animales.show');
-    Route::get('/{animal}/edit', [AnimalController::class, 'edit'])->name('animales.edit');
-    Route::put('/{animal}', [AnimalController::class, 'update'])->name('animales.update');
-    Route::delete('/{animal}', [AnimalController::class, 'destroy'])->name('animales.destroy');
-    
-    // Rutas adicionales para manejo de registros médicos
-    Route::get('/{animal}/registroMedico', [AnimalController::class, 'registroMedico'])->name('animales.registroMedico');
-    Route::post('/{animal}/addRegistro', [AnimalController::class, 'addRegistro'])->name('animales.addRegistro');
-    Route::get('/{animal}/showRegistro', [AnimalController::class, 'showRegistro'])->name('animales.showRegistro');
-    
-    // Rutas de venta de animales
-    Route::get('/{animal}/venta', [AnimalController::class, 'venta'])->name('animales.venta');
-    Route::post('/{animal}/sell', [AnimalController::class, 'sell'])->name('animales.sell');
-});
-
- */
 
 Route::get('/animales/vender', function(){
     return view('animales.vende');
@@ -92,12 +52,25 @@ Route::delete('/cultivo/{$cultivo}',[CultivoController::class,'destroy'])->name(
 We have to consider the scenario where the expense might or might not be releated
 to a crop
 */
+//Calcular ganancia y gastos
+Route::get('/envios/ganancia/{cultivoId}',[AnalisisController::class, 'index'])->name('envios.ganancia');
+
 //Enviar informaicon Gasto
 Route::post('/cultivos/add',[CultivoController::class,'addGasto'])->name('cultivo.addGasto');
 Route::get('/cultivos/form',[CultivoController::class,'form_gastos'])->name('cultivo.gasto');
+//Mostrar gastos
+Route::get('/cultivo/{cultivo}/listgastos',[CultivoController::class,'gastoSpecific'])->name('cultivo.gastoSpecific');
+//Mostrar ganancias
+Route::get('/cultivo/{cultivo}/ganancias',[AnalisisController::class,'index'])->name('cultivo.ganancias');
+
 //Guardar un nueo trabajo
 Route::get('/cultivo/{cultivo}/trabajo',[CultivoController::class,'trabajo'])->name('cultivo.trabajo');
 Route::post('/cultivo/{cultivo}/addfinal',[CultivoController::class,'addTrabajo'])->name('cultivo.addTrabajo');
+//Relacionar trabajador
+Route::get('/cultivo/{trabajo}/addtrabajador',[CultivoController::class,'addtrabajador'])->name('cultivo.addtrabajador');
+Route::post('/cultivo/relacionar',[CultivoController::class,'relacionar'])->name('cultivo.relacionar');
+
+
 
 //* For how the form for add employe
 Route::get('/cultivo/form',[CultivoController::class,'formEmploye'])->name('cultivo.formEmploye');
@@ -113,34 +86,25 @@ Route::post('/cultivo/destroyemployes',[CultivoController::class,'destroyemploye
 
 
 // ** Foutes for managemente A N I M A L E S
+Route::prefix('animales')->group(function () {
+    // Rutas que requieren autenticación
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/', [AnimalController::class, 'index'])->name('animales.index'); // Mostrar todos los animales
+        Route::get('/create', [AnimalController::class, 'create'])->name('animales.create'); // Mostrar el formulario para crear un nuevo animal
+        Route::post('/store', [AnimalController::class, 'store'])->name('animales.store'); // Almacenar un nuevo animal
+        Route::get('/{animal}/edit', [AnimalController::class, 'edit'])->name('animales.edit'); // Mostrar el formulario para editar un animal
+        Route::put('/{animal}', [AnimalController::class, 'update'])->name('animales.update'); // Actualizar un animal
+        Route::delete('/{animal}', [AnimalController::class, 'destroy'])->name('animales.destroy'); // Eliminar un animal
+        Route::get('/{animal}/registroMedico', [AnimalController::class, 'registroMedico'])->name('animales.registroMedico'); // Registro médico
+        Route::post('/{animal}/addRegistro', [AnimalController::class, 'addRegistro'])->name('animales.addRegistro'); // Agregar registro médico
+        Route::get('/{animal}/showRegistro', [AnimalController::class, 'showRegistro'])->name('animales.showRegistro'); // Mostrar registro médico
+        Route::get('/{animal}/venta', [AnimalController::class, 'venta'])->name('animales.venta'); // Ruta para la venta de un animal
+        Route::post('/{id}/sell', [AnimalController::class, 'sell'])->name('animales.sell'); // Formulario para vender un animal
+    });
 
-Route::get('/animales/analysis',[AnimalController::class,'analysis']);
-Route::get('/animales/create', [AnimalController:: class, 'create'])->name('animales.create');
-Route::post('/animales/store', [AnimalController::class, 'store'])->name('animales.store')->middleware(['auth']);
-//Ruta para mostrar todos los animales donde se tiene que estar autenteticado
-Route::get('/animales',[AnimalController::class,'index'])->name('animales.index')->middleware(['auth']);
-//Route for show the form for create a new animal
-Route::get('/animales/create',[AnimalController::class, 'create'])->name('animales.create');
-//route for store a new animal
-Route::post('/animales', [AnimalController::class, 'store'])->name('animales.store');
-//Route for show a scpecifif animal
-Route::get('/animales/{animal}', [AnimalController::class, 'show'])->name('animales.show');
-//Route for show the edit form 
-Route::get('/animales/{animal}/edit', [AnimalController::class, 'edit'])->name('animales.edit');
-//Ruta para actualiar un animal
-Route::put('/animales/{animal}',[AnimalController::class, 'update'])->name('animales.update');
-//For delete
-Route::delete('/animales/{animal}',[AnimalController::class, 'destroy'])->name('animales.destroy');
-//Registro medico formulario de un animal
-Route::get('/animales/{animal}/registroMedico',[AnimalController::class, 'registroMedico'])->name('animales.registroMedico');
-//Route for agregar el registro medico a la bd
-Route::post('/animales/{animal}/addRegistro', [AnimalController::class, 'addRegistro'])->name('animales.addRegistro');
-//route for sho a specifif register
-Route::get('/animales/{animal}/showRegistro',[AnimalController::class, 'showRegistro'])->name('animales.showRegistro');
-
-// Ruta para la venta de un animal (aún no implementada en el controlador)
-Route::get('/animales/{animal}/venta', [AnimalController::class, 'venta'])->name('animales.venta');
-//Route for the form for sell one animal
-Route::post('/animales/{id}/sell',[AnimalController::class, 'sell'])->name('animales.sell');
+    // Rutas que no requieren autenticación
+    Route::get('/analysis', [AnimalController::class, 'analysis']); // Análisis de animales
+    Route::get('/{animal}', [AnimalController::class, 'show'])->name('animales.show'); // Mostrar un animal específico
+});
 //analysys
 require __DIR__.'/auth.php';

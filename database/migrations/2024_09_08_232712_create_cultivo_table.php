@@ -27,7 +27,7 @@ return new class extends Migration
             $table->float('longitude',10,7)->nullable();
             $table->string('foto')->nullable();
             $table->float('bultos_abono');
-            $table->float('semilla');
+            $table->string('semilla');
             $table->timestamps('');
         });
     }

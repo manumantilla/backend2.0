@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminta\Support\Facades\DB;   
-
+use App\Models\Empleado_Trabajo;
 class EmpleadoTrabajoSeeder extends Seeder
 {
     /**
@@ -14,11 +14,14 @@ class EmpleadoTrabajoSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::table('empleado_trabajo')->insert([
-            'trabajo_id' => 1,
-            'empleado_id' => 1,
-            'descripcion' => 'Recolección de maíz',
-            'pago' => 50000
+        Empleado_Trabajo::insert([
+            [
+                'trabajo_id' => 1,
+                'empleado_id' => 1,
+                'descripcion' => 'Recolección de maíz',
+                'pago' => 50000,
+            ]
+        
         ]);
     }
 }

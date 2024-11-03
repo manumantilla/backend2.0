@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Iluminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Gasto;
 
 class GastoSeeder extends Seeder
 {
@@ -15,15 +16,15 @@ class GastoSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::table('gasto')->insert([
+        Gasto::insert([
             'cultivo_id' => 1,
             'foto' => 'foto_gasto.jpg',
             'responsable' => 'Mauricio Pérez',
             'descripcion' => 'Compra de fertilizantes',
             'valor' => 1500000,
             'vendedor' => 'Proveedor AgroInsumos',
-            'tipo' => 'Insumo',
-            'ciclo' => 'Inicio'
+            'tipo' => 'Fertilizante',
+            'ciclo' => 'nacimiento',
         ]);
     }
 }

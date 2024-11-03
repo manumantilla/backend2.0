@@ -18,6 +18,13 @@ use Illuminate\Http\Request;
 class CultivoController extends Controller
 {
     // todo 
+    // * Show gastos
+    public function gastoSpecific(Cultivo $cultivo){
+        $cultivo = Cultivo::findOrFail($cultivo);
+        $gastos = Gasto::where('cultivo_id',$id)->get();
+        return view('cultivo.listagastos',compact('cultivo','gastos'));
+
+    }
 
     //? Show form for add crop
     public function showFormCrop(){
@@ -126,7 +133,7 @@ class CultivoController extends Controller
             'valor' => 'required|numeric',
             'descripcion' => 'required|string',
             'foto' => 'nullable|mimes:jpg,jpeg,png,svg,pdf',
-            'cultivo_id' => 'nullable|exists:cultivos,id',
+            'cultivo_id' => 'nullable|exists:cultivo,id',
         ]);
         if ($request->hasFile('foto')){
             $imageName = $request->file('foto')->store('public/compra_facturas');
@@ -145,6 +152,36 @@ class CultivoController extends Controller
         }
         $gasto -> save();
         return redirect()->route('cultivo.index')->with('success','Agregar Gasto');
+
+    }
+    //! 
+    public function addtrabajador(Trabajo $trabajo){
+        $trabajo = Trabajo::findOrFail($trabajo);
+        return view('cultivo.addtrabajador',compact('trabajo'));
+    }
+    public function relacionar(Request $request){
+        $request -> validate([
+            'trabajo_id' => '',
+            'empleado_id' => '',
+            'descripcion' => '',
+            'pago' => '',
+        ]);
+
+        $empleado_trabajo = new Empleado_Trabajo();
+        $empleado_trabajo->trabajo_id = $request->trabajo_id;
+        $empleado_trabajo->empleado_id = $request->empleado_id;
+        $empleado_trabajo->descripcion = $request->descripcion;
+        $empleado_trabajo->pago = $request->pago;
+        try {
+            Log::info('Validación pasada, se procederá a relacionar el empleado');
+            
+            $empleado_trabajo->save(); // Guardar el trabajo
+    
+            return redirect()->route('cultivo.showcultivos')->with('success', 'Empleado Registrado Exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error al registrar el empleado al trabajo: ' . $e->getMessage());
+            return back()->withErrors('Error al guardar el trabajo: ' . $e->getMessage())->withInput();
+        }
 
     }
 
@@ -195,7 +232,7 @@ class CultivoController extends Controller
         }
     }
     
-    // ! Add a viaje
+    //! Add a viaje
     public function viaje(Request $request, Cultivo $cultivo){
 
     }
