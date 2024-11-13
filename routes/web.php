@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Route;
 Route::resource('envios',EnvioController::class);
 Route::get('/trabajo/{trabajo}/empleados', [CultivoController::class, 'mostrarTrabajadores'])->name('trabajo.empleados');
 
+
+Route::get('statistics/animals-by-stage', [AnalisisController::class, 'animalsByStage'])->name('animals.stage');
+Route::get('statistics/animals-by-gender', [AnalisisController::class, 'animalsByGender'])->name('animals.gender');
+Route::get('statistics/average-weight-by-stage', [AnalisisController::class, 'averageWeightByStage'])->name('');
+Route::get('statistics/animals-by-status', [AnalisisController::class, 'animalsByStatus'])->name('');
+Route::get('statistics/crops-by-status', [AnalisisController::class, 'cropsByStatus'])->name('');
+Route::get('statistics/average-expense-by-type', [AnalisisController::class, 'averageExpenseByType'])->name('');
+
+
+
 Route::get('/animales/vender', function(){
     return view('animales.vende');
 });

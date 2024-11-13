@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Detalles del Cultivo</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Detalles del Cultivo  &#x1f331</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-gray-100 p-4 rounded-md shadow-md">
@@ -16,8 +16,8 @@
         </div>
 
         <div class="bg-gray-100 p-4 rounded-md shadow-md">
-            <h3 class="text-lg font-semibold text-gray-700">Tipo de Cultivo</h3>
-            <p class="text-gray-600">{{ $cultivo->tipo }}</p>
+            <h3 class="text-lg font-semibold text-gray-700">Etapa de Cultivo</h3>
+            <p class="text-gray-600">{{ $cultivo->etapa }}</p>
         </div>
 
         <div class="bg-gray-100 p-4 rounded-md shadow-md">
@@ -32,7 +32,7 @@
 
         <div class="bg-gray-100 p-4 rounded-md shadow-md">
             <h3 class="text-lg font-semibold text-gray-700">Producción Estimada</h3>
-            <p class="text-gray-600">{{ $cultivo->produccion }} toneladas</p>
+            <p class="text-gray-600">{{ $cultivo->rendimiento }} toneladas</p>
         </div>
 
         <div class="bg-gray-100 p-4 rounded-md shadow-md">
@@ -41,8 +41,12 @@
         </div>
 
         <div class="bg-gray-100 p-4 rounded-md shadow-md">
-            <h3 class="text-lg font-semibold text-gray-700">Ubicación</h3>
-            <p class="text-gray-600">{{ $cultivo->ubicacion }}</p>
+            <h3 class="text-lg font-semibold text-gray-700">Ubicación latitud</h3>
+            <p class="text-gray-600">{{ $cultivo->latitude }}</p>
+        </div>
+        <div class="bg-gray-100 p-4 rounded-md shadow-md">
+            <h3 class="text-lg font-semibold text-gray-700">Ubicación Longitud</h3>
+            <p class="text-gray-600">{{ $cultivo->longitude }}</p>
         </div>
     </div>
 

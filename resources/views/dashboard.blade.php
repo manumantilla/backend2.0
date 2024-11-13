@@ -49,6 +49,14 @@
                                 <h4 class="font-semibold">Perfil</h4>
                                 <p>Editar tu perfil.</p>
                             </a>
+                            <a href="{{ route('animals.stage') }}" class="block p-4 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600">
+                                <h4 class="font-semibold">Estado Aniaml</h4>
+                                <p>Estado de los animales</p>
+                            </a>
+                            <a href="{{ route('animals.gender') }}" class="block p-4 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600">
+                                <h4 class="font-semibold">Grafica Generos</h4>
+                                <p>Genero de animales registrados</p>
+                            </a>
                         </div>
                     </div>
                 </div>

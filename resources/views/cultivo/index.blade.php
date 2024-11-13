@@ -1,12 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<h2>Siembras</h2>
-<div class="flex items-center justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-700">Lista de Cultivos</h1>
-    </div>
-</div>
-<div style="width:1400px;margin-left:45px;" class=" overflow-x-auto">
+<div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
@@ -78,4 +72,5 @@
         </tbody>
     </table>
 </div>
+
 @endsection
