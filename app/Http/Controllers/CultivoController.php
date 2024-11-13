@@ -149,6 +149,15 @@ class CultivoController extends Controller
         return redirect()->route('cultivo.showcultivos')->with('success', 'Gasto agregado exitosamente');
     }
       //! 
+    // TrabajoController.php
+    public function mostrarTrabajadores(Trabajo $trabajo)
+    {
+        // Obtener empleados relacionados con el trabajo específico
+        $empleados = $trabajo->empleados;
+
+        return view('cultivo.mostrar_empleados', compact('trabajo', 'empleados'));
+    }
+
     public function addtrabajador(Trabajo $trabajo){
         $empleados = Empleado::all();
         return view('cultivo.relaciontrabajadores', compact('trabajo', 'empleados'));
@@ -168,9 +177,7 @@ class CultivoController extends Controller
         $empleado_trabajo->descripcion = $request->descripcion;
         $empleado_trabajo->pago = $request->pago;
         try {
-            Log::info('Validación pasada, se procederá a relacionar el empleado');
-            
-            $empleado_trabajo->save(); // Guardar el trabajo
+             $empleado_trabajo->save(); // Guardar el trabajo
     
             return redirect()->route('cultivo.showcultivos')->with('success', 'Empleado Registrado Exitosamente');
         } catch (\Exception $e) {

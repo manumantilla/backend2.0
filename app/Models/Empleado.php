@@ -9,5 +9,10 @@ class Empleado extends Model
 {
     protected $table = 'empleado';
     use HasFactory;
-    
+    // Empleado.php
+    public function trabajos()
+    {
+        return $this->belongsToMany(Trabajo::class, 'empleado_trabajo')->withPivot('descripcion', 'pago');
+    }
+
 }

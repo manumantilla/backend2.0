@@ -7,6 +7,7 @@ use App\Http\Controllers\EnvioController;
 use App\Http\Controllers\AnalisisController;
 use Illuminate\Support\Facades\Route;
 Route::resource('envios',EnvioController::class);
+Route::get('/trabajo/{trabajo}/empleados', [CultivoController::class, 'mostrarTrabajadores'])->name('trabajo.empleados');
 
 Route::get('/animales/vender', function(){
     return view('animales.vende');
@@ -28,7 +29,9 @@ Route::middleware('auth')->group(function () {
 // **
 
 // ** Routes fro management C U L T I V O S
-// TODO Routes CRUD Basic
+// TODO Routes CRUD 
+
+Route::get('/cultivo/create',[CultivoController::class, 'showFormCrop'])->name('cultivo.create');
 // ? Show all the crops
 Route::get('/cultivo/trabajos',[CultivoController::class, 'trabajos'])->name('cultivo.trabajos');
 Route::get('/cultivo/{trabajo}/addtrabajador',[CultivoController::class,'addtrabajador'])->name('cultivo.addtrabajador');
@@ -46,7 +49,6 @@ Route::get('cultivo/{cultivo}',[CultivoController::class,'especifico'])->name('c
 Route::get('cultivo/',[CultivoController::class,'showFormCrop'])->name('cultivo.showFormCrop');
 // 
 // ? create and store
-Route::get('/cultivo/create',[CultivoController::class, 'create'])->name('cultivo.create');
 Route::post('/cultivo/store',[CultivoController::class, 'store'])->name('cultivo.store');
 // ? edit and update
 Route::get('/cultivo/{$cultivo}/edit',[CultivoController::class, 'edit'])->name('cultivo.edit');

@@ -26,7 +26,7 @@
                     <td class="py-2 px-4 border-b">{{ $gasto->ciclo }}</td>
                     <td class="py-2 px-4 border-b">{{ $gasto->responsable }}</td>
                     <td class="py-2 px-4 border-b">{{ $gasto->descripcion }}</td>
-                    <td class="py-2 px-4 border-b">${{ number_format($gasto->valor, 2) }}</td>
+                    <td class="py-2 px-4 border-b">${{ number_format($gasto->valor) }}</td>
                     <td class="py-2 px-4 border-b">{{ $gasto->vendedor }}</td>
                 </tr>
             @endforeach

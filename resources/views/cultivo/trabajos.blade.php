@@ -35,7 +35,8 @@
                         </span>
                     </td>
                     <td class="text-center  items-center py-2 px-4 border-b border-gray-300">
-                        <a href="{{route('cultivo.addtrabajador',$trabajo->id)}}">Agregar Obrero</a>
+                        <a class="rounded-full bg-green-200" href="{{route('cultivo.addtrabajador',$trabajo->id)}}">Agregar Obrero</a>
+                        <a class="rounded-full bg-red-200" href="{{route('trabajo.empleados',$trabajo->id)}}">Obreros</a>
                     </td>
                 </tr>
             @endforeach

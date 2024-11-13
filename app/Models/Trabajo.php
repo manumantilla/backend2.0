@@ -20,12 +20,15 @@ class Trabajo extends Model
         'prioridad',
     ];
 
-    //relacion uno a muchos: un trabajo tiene muchos empleados_trabajo
-    public function empleado_trabajo(){
-        return $this->hasMany(Empleado_Trabajo::class,'trabajo_id');
-    }
+   
     //* Relation: Trabajo belongs to Cultivo table
     public function trabajo(){
         return $this->belongsTo(Cultivo::class,'cultivo_id');
     }
+    // Trabajo.php
+    public function empleados()
+    {
+        return $this->belongsToMany(Empleado::class, 'empleado_trabajo')->withPivot('descripcion', 'pago');
+    }
+
 }
