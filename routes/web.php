@@ -10,13 +10,81 @@ Route::resource('envios',EnvioController::class);
 Route::get('/trabajo/{trabajo}/empleados', [CultivoController::class, 'mostrarTrabajadores'])->name('trabajo.empleados');
 
 
+Route::prefix('cultivo')->name('cultivo.')->group(function () {
+    // Formulario para agregar empleado
+    Route::get('/form', [CultivoController::class, 'formEmploye'])->name('formEmploye');
+    
+    // Guardar nuevo empleado
+    Route::post('/addEmploye', [CultivoController::class, 'addEmploye'])->name('addEmploye');
+    
+    // Mostrar todos los empleados
+    Route::get('/showemployes', [CultivoController::class, 'showemployes'])->name('showemployes');
+    
+    // Editar empleados
+    Route::get('/editemployes', [CultivoController::class, 'editemployes'])->name('editemployes');
+    
+    // Eliminar empleados
+    Route::post('/destroyemployes', [CultivoController::class, 'destroyemployes'])->name('destroyemployes');
+    
+    // Crear cultivo
+    Route::get('/create', [CultivoController::class, 'showFormCrop'])->name('create');
+    
+    // Mostrar todos los trabajos
+    Route::get('/trabajos', [CultivoController::class, 'trabajos'])->name('trabajos');
+    
+    // Añadir trabajador a un trabajo específico
+    Route::get('/{trabajo}/addtrabajador', [CultivoController::class, 'addtrabajador'])->name('addtrabajador');
+    
+    // Relacionar trabajo con empleado
+    Route::post('/relacionar', [CultivoController::class, 'relacionar'])->name('relacionar');
+    
+    // Formulario para gastos
+    Route::get('gastos/', [CultivoController::class, 'form_gastos'])->name('form_gastos');
+    
+    // Mostrar cultivos
+    Route::get('cultivos', [CultivoController::class, 'showcultivos'])->name('showcultivos');
+    
+    // Mostrar un cultivo específico
+    Route::get('{cultivo}', [CultivoController::class, 'especifico'])->name('especifico');
+    
+    // Formulario para crear nuevo cultivo
+    Route::get('/', [CultivoController::class, 'showFormCrop'])->name('showFormCrop');
+    
+    // Crear y almacenar nuevo cultivo
+    Route::post('/store', [CultivoController::class, 'store'])->name('store');
+    
+    // Editar y actualizar cultivo
+    Route::get('/{cultivo}/edit', [CultivoController::class, 'edit'])->name('edit');
+    Route::put('/{cultivo}/update', [CultivoController::class, 'update'])->name('update');
+    
+    // Eliminar cultivo
+    Route::delete('/{cultivo}', [CultivoController::class, 'destroy'])->name('destroy');
+    
+    // Guardar un nuevo gasto
+    Route::post('/add', [CultivoController::class, 'addGasto'])->name('addGasto');
+    
+    // Mostrar formulario de gasto
+    Route::get('/form', [CultivoController::class, 'form_gastos'])->name('gasto');
+    
+    // Mostrar gastos específicos del cultivo
+    Route::get('/{cultivo}/listgastos', [CultivoController::class, 'gastoSpecific'])->name('gastoSpecific');
+    
+    // Mostrar ganancias
+    Route::get('/{cultivo}/ganancias', [AnalisisController::class, 'index'])->name('ganancias');
+    
+    // Guardar un nuevo trabajo
+    Route::get('/{cultivo}/trabajo', [CultivoController::class, 'trabajo'])->name('trabajo');
+    
+    // Añadir trabajo final a cultivo
+    Route::post('/{cultivo}/addfinal', [CultivoController::class, 'addTrabajo'])->name('addTrabajo');
+});
 Route::get('statistics/animals-by-stage', [AnalisisController::class, 'animalsByStage'])->name('animals.stage');
 Route::get('statistics/animals-by-gender', [AnalisisController::class, 'animalsByGender'])->name('animals.gender');
-Route::get('statistics/average-weight-by-stage', [AnalisisController::class, 'averageWeightByStage'])->name('');
-Route::get('statistics/animals-by-status', [AnalisisController::class, 'animalsByStatus'])->name('');
-Route::get('statistics/crops-by-status', [AnalisisController::class, 'cropsByStatus'])->name('');
-Route::get('statistics/average-expense-by-type', [AnalisisController::class, 'averageExpenseByType'])->name('');
+Route::get('statistics/average-weight-by-stage', [AnalisisController::class, 'averageWeightByStage'])->name('animals.average_weight_by_stage');
+Route::get('statistics/animals-by-status', [AnalisisController::class, 'animalsByStatus'])->name('animals.status');
 
+Route::get('statistics/crops-by-status', [AnalisisController::class, 'cropsByStatus'])->name('animals.cropsbystatus');
+Route::get('statistics/average-expense-by-type', [AnalisisController::class, 'averageExpenseByType'])->name('animals.average_expense_by_type');
 
 
 Route::get('/animales/vender', function(){
@@ -74,17 +142,7 @@ to a crop
 //Calcular ganancia y gastos
 Route::get('/envios/ganancia/{cultivoId}',[AnalisisController::class, 'index'])->name('envios.ganancia');
 
-//Enviar informaicon Gasto
-Route::post('/cultivos/add',[CultivoController::class,'addGasto'])->name('cultivo.addGasto');
-Route::get('/cultivos/form',[CultivoController::class,'form_gastos'])->name('cultivo.gasto');
-//Mostrar gastos
-Route::get('/cultivo/{cultivo}/listgastos',[CultivoController::class,'gastoSpecific'])->name('cultivo.gastoSpecific');
-//Mostrar ganancias
-Route::get('/cultivo/{cultivo}/ganancias',[AnalisisController::class,'index'])->name('cultivo.ganancias');
 
-//Guardar un nueo trabajo
-Route::get('/cultivo/{cultivo}/trabajo',[CultivoController::class,'trabajo'])->name('cultivo.trabajo');
-Route::post('/cultivo/{cultivo}/addfinal',[CultivoController::class,'addTrabajo'])->name('cultivo.addTrabajo');
 
 
 //Relacionar trabajador
@@ -92,15 +150,7 @@ Route::post('/cultivo/{cultivo}/addfinal',[CultivoController::class,'addTrabajo'
 
 
 //* For how the form for add employe
-Route::get('/cultivo/form',[CultivoController::class,'formEmploye'])->name('cultivo.formEmploye');
-//Save new employe
-Route::post('/cultivo/addEmploye',[CultivoController::class,'addEmploye'])->name('cultivo.addEmploye');
-//Show all employes
-Route::get('/cultivo/showemployes',[CultivoController::class,'showemployes'])->name('cultivo.showemployes');
-//Edit employes
-Route::get('/cultivo/editemployes',[CultivoController::class,'editemployes'])->name('cultivo.editemployes');
-//Delete employes
-Route::post('/cultivo/destroyemployes',[CultivoController::class,'destroyemployes'])->name('cultivo.destroyemployes');
+
 
 
 

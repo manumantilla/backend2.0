@@ -114,6 +114,9 @@ class CultivoController extends Controller
         $request->validate([
                 
         ]);
+        if($request->hasFile('foto')){
+            
+        }
         $cultivo->update($request->all());
         return redirect()->route('cultivo.index')->with('success','Cultivo Actualizado Exitosamente');
     }

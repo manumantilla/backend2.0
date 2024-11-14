@@ -2,11 +2,11 @@
 @section('content')
 
 <div style="width:100%;" class="bg-gray-100">
-    <h1 class="text-center text-2xl font-bold py-6">Agregar un nuevo Animal</h1>
+    <h1 class="text-center text-2xl font-bold py-6">Agregar un nuevo Animal  &#x1f404</h1>
 
     <div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md mt-10">
         <h2 class="text-lg font-semibold text-gray-700 mb-4">Animal Information</h2>
-        <p class="text-sm text-gray-500 mb-6">Record the animal's information and remember to upload the guide if necessary.</p>
+        <p class="text-sm text-gray-500 mb-6">Guardar la informacion del animal .</p>
 
         <form method="POST" action="{{ route('animales.store') }} "enctype="multipart/form-data">
             @csrf <!-- Token CSRF para proteger contra ataques -->

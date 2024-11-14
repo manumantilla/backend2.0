@@ -4,7 +4,7 @@
         <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Estado de los Animales</h2>
 
         <!-- Gráfico de Tortas -->
-        <div class="flex justify-center mb-8">
+        <div style="width:800px; height:600px;" class="flex justify-center mb-8">
             <canvas id="animalsByStatusChart" class="w-full max-w-4xl"></canvas>
         </div>
 

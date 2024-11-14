@@ -5,7 +5,7 @@
         <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Gasto Promedio por Tipo de Gasto</h2>
 
         <!-- Gráfico -->
-        <div class="flex justify-center mb-8">
+        <div style="width:800px; height:600px;"class="flex justify-center mb-8">
             <canvas id="averageExpenseByTypeChart" class="w-full max-w-4xl"></canvas>
         </div>
 
@@ -80,3 +80,4 @@
     </script>
 
 
+@endsection

@@ -6,8 +6,8 @@
         <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Peso Promedio por Etapa de Animales</h2>
 
         <!-- Gráfico de Barras -->
-        <div class="flex justify-center mb-8">
-            <canvas id="averageWeightByStageChart" class="w-full max-w-4xl"></canvas>
+        <div style="width:800px; height:600px;"class="flex justify-center mb-8">
+            <canvas id="averageWeightByStageChart" ></canvas>
         </div>
 
         <!-- Tabla con los datos -->
@@ -80,3 +80,4 @@
         });
     </script>
 
+@endsection

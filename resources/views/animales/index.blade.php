@@ -5,7 +5,7 @@
 <div class=" p-6 bg-white shadow-md rounded-md mt-10">
     <div class="flex items-center justify-between mb-6">
         <div>
-            <h1 class="text-2xl font-semibold text-gray-700">Lista de Animales</h1>
+            <h1 class="text-2xl font-semibold text-gray-700">Lista de Animales  &#x1f404</h1>
             <p class="text-sm text-gray-500">Una lista de todos los animales registrados incluyendo su nombre, especie, raza, etc.</p>
         </div>
         <a href="{{ route('animales.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Agregar Animal</a>

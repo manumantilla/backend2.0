@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="">
-    <h1>Editar Animal</h1>
+    <h1>Editar Animal  &#x1f404</h1>
 </div>
 <div>
     <form action="{{ route('animales.update', $animal->id)}}" method="POST">

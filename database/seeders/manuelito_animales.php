@@ -2,54 +2,306 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str; // Asegúrate de importar Str correctamente
+use App\Models\Animal;
+use Illuminate\Support\Str;
+
 class manuelito_animales extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
-    {
-        //
-        $locations = [
-            ['latitude' => 6.910356, 'longitude' => -72.843997],
-            ['latitude' => 6.911356, 'longitude' => -72.845997],
-            ['latitude' => 6.912356, 'longitude' => -72.847997],
-            ['latitude' => 6.913356, 'longitude' => -72.849997],
-            ['latitude' => 6.914356, 'longitude' => -72.851997],
-        ];
-        //
+    public function run()
+    {   
+        // Arrays proporcionados
         $especies = ['bovino','equino','cabro'];
         $razas_bovino = ['brahman blanco','brahman rojo','gyrolando'];
         $ciudades = ['Bucaramanga','Lebrija','Yopal'];
-        $generos = ['macho','hembra'];
+        $generos = ['Macho','Hembra'];
         $estados = ['Activo','Fallecidos','Vendido','Perdido'];
+        $etapas = ['Cria','Levante','Ceba'];
 
-        for($i=0; $i<50; $i++){
-               // Randomly select a geographic location
-            $randomLocation = $locations[array_rand($locations)];
+        // Coordenadas aproximadas para las ciudades
+        $coordenadas = [
+            'Bucaramanga' => ['latitude' => 7.1193, 'longitude' => -73.1227],
+            'Lebrija' => ['latitude' => 6.9912, 'longitude' => -73.1421],
+            'Yopal' => ['latitude' => 5.3333, 'longitude' => -72.4109],
+        ];
 
-            $especie = $especies[array_rand($especies)];
-            $raza = $especie == 'bovino' ? $razas_bovino[array_rand($razas_bovino)] : 'null';
-            DB::table('animals')->insert([
-                'identificacion' => Str::random(3) . '-' . rand(100, 999) . '-' . rand(1, 9),
-                'nombre' => Str::random(5),
-                'especie' => $especie,
-                'raza' => $raza,
-                'fecha_nacimiento' => now()->subYears(rand(1, 10)),
-                'fecha_ingreso' => now()->subMonths(rand(1, 12)),
-                'origen' => $ciudades[array_rand($ciudades)],
-                'genero' => $generos[array_rand($generos)],
-                'estado' => $estados[array_rand($estados)],
-                'peso' => rand(120, 650),
-                'latitude' => $randomLocation['latitude'],
-                'longitude' => $randomLocation['longitude'],
-                'foto' => 'null', // Aquí puedes gestionar la subida de fotos
-            ]);
-        }
-
+        // Inserciones de ejemplo
+        Animal::insert([
+            [
+                'identificacion' => 'A0001',
+                'nombre' => 'Pepe',
+                'especie' => 'bovino',
+                'raza' => 'brahman rojo',
+                'fecha_nacimiento' => '2020-05-15',
+                'fecha_ingreso' => '2021-06-20',
+                'origen' => 'Bucaramanga',
+                'genero' => 'Macho',
+                'estado' => 'Activo',
+                'peso' => '500kg',
+                'foto' => 'toro_fuerte.jpg',
+                'etapa' => 'Ceba',
+                'latitude' => $coordenadas['Bucaramanga']['latitude'],
+                'longitude' => $coordenadas['Bucaramanga']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0002',
+                'nombre' => 'Vaca Lola',
+                'especie' => 'bovino',
+                'raza' => 'brahman blanco',
+                'fecha_nacimiento' => '2019-03-22',
+                'fecha_ingreso' => '2020-04-25',
+                'origen' => 'Lebrija',
+                'genero' => 'Hembra',
+                'estado' => 'Vendido',
+                'peso' => '450kg',
+                'foto' => 'vaca_bella.jpg',
+                'etapa' => 'Levante',
+                'latitude' => $coordenadas['Lebrija']['latitude'],
+                'longitude' => $coordenadas['Lebrija']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0003',
+                'nombre' => 'Don DImadon',
+                'especie' => 'equino',
+                'raza' => 'caballo pura sangre',
+                'fecha_nacimiento' => '2021-07-10',
+                'fecha_ingreso' => '2022-08-15',
+                'origen' => 'Yopal',
+                'genero' => 'Macho',
+                'estado' => 'Activo',
+                'peso' => '400kg',
+                'foto' => 'potro_rapido.jpg',
+                'etapa' => 'Cria',
+                'latitude' => $coordenadas['Yopal']['latitude'],
+                'longitude' => $coordenadas['Yopal']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0004',
+                'nombre' => 'Cabro Loco',
+                'especie' => 'cabro',
+                'raza' => 'cabra Boer',
+                'fecha_nacimiento' => '2022-01-05',
+                'fecha_ingreso' => '2022-02-10',
+                'origen' => 'Bucaramanga',
+                'genero' => 'Hembra',
+                'estado' => 'Activo',
+                'peso' => '60kg',
+                'foto' => 'cabro_travieso.jpg',
+                'etapa' => 'Cria',
+                'latitude' => $coordenadas['Bucaramanga']['latitude'],
+                'longitude' => $coordenadas['Bucaramanga']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0005',
+                'nombre' => 'Toro Mauricio',
+                'especie' => 'bovino',
+                'raza' => 'gyrolando',
+                'fecha_nacimiento' => '2018-11-30',
+                'fecha_ingreso' => '2019-12-15',
+                'origen' => 'Lebrija',
+                'genero' => 'Macho',
+                'estado' => 'Fallecidos',
+                'peso' => '550kg',
+                'foto' => 'toro_bravo.jpg',
+                'etapa' => 'Ceba',
+                'latitude' => $coordenadas['Lebrija']['latitude'],
+                'longitude' => $coordenadas['Lebrija']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0006',
+                'nombre' => 'Vaca Lola2',
+                'especie' => 'bovino',
+                'raza' => 'brahman blanco',
+                'fecha_nacimiento' => '2020-09-18',
+                'fecha_ingreso' => '2021-10-22',
+                'origen' => 'Yopal',
+                'genero' => 'Hembra',
+                'estado' => 'Activo',
+                'peso' => '480kg',
+                'foto' => 'vaca_lechera.jpg',
+                'etapa' => 'Levante',
+                'latitude' => $coordenadas['Yopal']['latitude'],
+                'longitude' => $coordenadas['Yopal']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0007',
+                'nombre' => 'JuniorH',
+                'especie' => 'equino',
+                'raza' => 'caballo pura sangre',
+                'fecha_nacimiento' => '2021-04-12',
+                'fecha_ingreso' => '2022-05-18',
+                'origen' => 'Bucaramanga',
+                'genero' => 'Macho',
+                'estado' => 'Vendido',
+                'peso' => '420kg',
+                'foto' => 'potro_fiel.jpg',
+                'etapa' => 'Ceba',
+                'latitude' => $coordenadas['Bucaramanga']['latitude'],
+                'longitude' => $coordenadas['Bucaramanga']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0008',
+                'nombre' => 'Cabra Cristiano',
+                'especie' => 'cabro',
+                'raza' => 'cabra Nubian',
+                'fecha_nacimiento' => '2022-03-25',
+                'fecha_ingreso' => '2022-04-30',
+                'origen' => 'Lebrija',
+                'genero' => 'Hembra',
+                'estado' => 'Activo',
+                'peso' => '65kg',
+                'foto' => 'cabra_blanca.jpg',
+                'etapa' => 'Cria',
+                'latitude' => $coordenadas['Lebrija']['latitude'],
+                'longitude' => $coordenadas['Lebrija']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0009',
+                'nombre' => 'Padron',
+                'especie' => 'bovino',
+                'raza' => 'gyrolando',
+                'fecha_nacimiento' => '2017-08-20',
+                'fecha_ingreso' => '2018-09-25',
+                'origen' => 'Yopal',
+                'genero' => 'Macho',
+                'estado' => 'Activo',
+                'peso' => '600kg',
+                'foto' => 'toro_gigante.jpg',
+                'etapa' => 'Ceba',
+                'latitude' => $coordenadas['Yopal']['latitude'],
+                'longitude' => $coordenadas['Yopal']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0010',
+                'nombre' => 'Doña Vaca',
+                'especie' => 'bovino',
+                'raza' => 'brahman blanco',
+                'fecha_nacimiento' => '2019-02-14',
+                'fecha_ingreso' => '2020-03-20',
+                'origen' => 'Yopal',
+                'genero' => 'Hembra',
+                'estado' => 'Perdido',
+                'peso' => '470kg',
+                'foto' => 'vaca_serena.jpg',
+                'etapa' => 'Levante',
+                'latitude' => $coordenadas['Yopal']['latitude'],
+                'longitude' => $coordenadas['Yopal']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0011',
+                'nombre' => 'Caballin',
+                'especie' => 'equino',
+                'raza' => 'caballo pura sangre',
+                'fecha_nacimiento' => '2021-12-05',
+                'fecha_ingreso' => '2022-01-10',
+                'origen' => 'Lebrija',
+                'genero' => 'Macho',
+                'estado' => 'Activo',
+                'peso' => '430kg',
+                'foto' => 'potro_alegre.jpg',
+                'etapa' => 'Cria',
+                'latitude' => $coordenadas['Lebrija']['latitude'],
+                'longitude' => $coordenadas['Lebrija']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0012',
+                'nombre' => 'Cabra Negra',
+                'especie' => 'cabro',
+                'raza' => 'cabra Boer',
+                'fecha_nacimiento' => '2022-06-18',
+                'fecha_ingreso' => '2022-07-22',
+                'origen' => 'Yopal',
+                'genero' => 'Hembra',
+                'estado' => 'Activo',
+                'peso' => '70kg',
+                'foto' => 'cabra_negra.jpg',
+                'etapa' => 'Cria',
+                'latitude' => $coordenadas['Yopal']['latitude'],
+                'longitude' => $coordenadas['Yopal']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0013',
+                'nombre' => 'Vaca Morena',
+                'especie' => 'bovino',
+                'raza' => 'brahman rojo',
+                'fecha_nacimiento' => '2020-10-10',
+                'fecha_ingreso' => '2021-11-15',
+                'origen' => 'Bucaramanga',
+                'genero' => 'Hembra',
+                'estado' => 'Activo',
+                'peso' => '480kg',
+                'foto' => 'vaca_morena.jpg',
+                'etapa' => 'Levante',
+                'latitude' => $coordenadas['Bucaramanga']['latitude'],
+                'longitude' => $coordenadas['Bucaramanga']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0014',
+                'nombre' => 'Toro Chiquitin',
+                'especie' => 'bovino',
+                'raza' => 'gyrolando',
+                'fecha_nacimiento' => '2016-04-08',
+                'fecha_ingreso' => '2017-05-12',
+                'origen' => 'Lebrija',
+                'genero' => 'Macho',
+                'estado' => 'Activo',
+                'peso' => '580kg',
+                'foto' => 'toro_valiente.jpg',
+                'etapa' => 'Ceba',
+                'latitude' => $coordenadas['Lebrija']['latitude'],
+                'longitude' => $coordenadas['Lebrija']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'identificacion' => 'A0015',
+                'nombre' => 'Vaca Kil',
+                'especie' => 'bovino',
+                'raza' => 'brahman blanco',
+                'fecha_nacimiento' => '2021-08-30',
+                'fecha_ingreso' => '2022-09-05',
+                'origen' => 'Yopal',
+                'genero' => 'Hembra',
+                'estado' => 'Activo',
+                'peso' => '460kg',
+                'foto' => 'vaca_dulce.jpg',
+                'etapa' => 'Levante',
+                'latitude' => $coordenadas['Yopal']['latitude'],
+                'longitude' => $coordenadas['Yopal']['longitude'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }

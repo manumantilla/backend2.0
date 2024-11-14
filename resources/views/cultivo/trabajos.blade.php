@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold mb-6">Trabajos de la Finca</h1>
+    <h1 class="text-2xl font-bold mb-6">Trabajos de la Finca</h1>
 
     <table class="min-w-full bg-white">
         <thead>
